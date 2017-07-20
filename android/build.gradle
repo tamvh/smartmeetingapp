@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        jcenter()
+        //maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.0'
+
+        // These docs use an open ended version so that our plugin
+        // can be updated quickly in response to Android tooling updates
+
+        // We recommend changing it to the latest version from our changelog:
+        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+        //classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.application'
+//apply plugin: 'io.fabric'
+
+//repositories {
+//    maven { url 'https://maven.fabric.io/public' }
+//}
+
+//crashlytics {
+//    enableNdk true
+    //androidNdkOut 'src/main/obj'
+//    androidNdkOut '/Users/baohavan/Dev/campus/smartmeetingapp/crashlytics_objs'
+//    androidNdkLibsOut '/Users/baohavan/Dev/campus/smartmeetingapp/crashlytics_libs'
+//}
+//
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Crashlytics Kit
+    //compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+    //    transitive = true
+    //}
+    // NDK Kit
+    //compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
+    //    transitive = true
+    //}
+}
+
+android {
+    /*******************************************************
+     * The following variables:
+     * - androidBuildToolsVersion,
+     * - androidCompileSdkVersion
+     * - qt5AndroidDir - holds the path to qt android files
+     *                   needed to build any Qt application
+     *                   on Android.
+     *
+     * are defined in gradle.properties file. This file is
+     * updated by QtCreator and androiddeployqt tools.
+     * Changing them manually might break the compilation!
+     *******************************************************/
+
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+
+    buildToolsVersion androidBuildToolsVersion
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
+            aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
+            res.srcDirs = [qt5AndroidDir + '/res', 'res']
+            resources.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+       }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
